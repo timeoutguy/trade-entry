@@ -4,7 +4,7 @@
       <mat-card-title>General</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 pt-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
         <mat-form-field class="w-full">
           <mat-label>Trade Date</mat-label>
           <input
@@ -87,10 +87,10 @@
 
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Tenor</mat-card-title>
+      <mat-card-title>Delivery Period</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 pt-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
         <mat-form-field class="w-full">
           <mat-label>Tenor Start</mat-label>
           <input matInput formControlName="tenorStart" [matDatepicker]="tenorStartPicker" required />
@@ -119,7 +119,7 @@
       <mat-card-title>Commercial</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 pt-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
         <div>
           <label class="mb-2 block text-sm font-medium">Quantity Mode</label>
           <mat-radio-group formControlName="quantityMode" class="flex flex-col gap-2">
@@ -201,7 +201,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field class="w-full md:col-span-2">
+        <mat-form-field class="w-full col-span-full">
           <mat-label>Incoterm Location</mat-label>
           <mat-select formControlName="incotermLocations" multiple required>
             @for (location of config.incotermLocations; track location) {
@@ -268,7 +268,7 @@
       <mat-card-title>Payment</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 pt-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
         <mat-form-field class="w-full">
           <mat-label>Payment Type</mat-label>
           <mat-select formControlName="paymentType" required>
@@ -311,7 +311,7 @@
       <mat-card-title>Optional</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 pt-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
         <mat-form-field class="w-full">
           <mat-label>Broker</mat-label>
           <mat-select formControlName="broker">
@@ -330,7 +330,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field class="w-full md:col-span-2">
+        <mat-form-field class="w-full col-span-full">
           <mat-label>Comment</mat-label>
           <textarea matInput rows="3" maxlength="250" formControlName="comment"></textarea>
           @if (isInvalid('comment')) {

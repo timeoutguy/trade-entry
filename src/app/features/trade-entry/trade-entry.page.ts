@@ -42,8 +42,10 @@ export class TradeEntryPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form.get('tenorStart')?.valueChanges.subscribe(() => this.updateSuggestedMonths());
-    this.form.get('tenorEnd')?.valueChanges.subscribe(() => this.updateSuggestedMonths());
+    this.form.valueChanges.subscribe(() => {
+      this.updateSuggestedMonths();
+      this.syncCommitments();
+    });
   }
 
   get effectiveMonthCount(): number {
@@ -66,9 +68,13 @@ export class TradeEntryPage implements OnInit {
     };
   }
 
-  generateCommitments(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+  onMonthCountOverrideChange(value: string): void {
+    this.monthCountOverride = value ? +value : null;
+    this.syncCommitments();
+  }
+
+  private syncCommitments(): void {
+    if (!this.canGenerate()) {
       return;
     }
 
