@@ -6,7 +6,20 @@
           <img src="logo/logo.svg" class="h-14 w-auto" alt="CFP Energy">
         </div>
       </div>
-      <span class="text-sm font-medium text-white">Trade Entry Platform</span>
+      <div class="flex items-center gap-4">
+        @if (auth.enabled && auth.accountName()) {
+          <span class="text-sm text-white/90">{{ auth.accountName() }}</span>
+          <button
+            mat-stroked-button
+            type="button"
+            class="!border-white/40 !text-white"
+            (click)="auth.logout()"
+          >
+            Sign out
+          </button>
+        }
+        <span class="text-sm font-medium text-white">Trade Entry Platform</span>
+      </div>
     </div>
   </header>
 

@@ -2,6 +2,23 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.27.
 
+## Configuration
+
+Copy the example environment file and fill in your values:
+
+```bash
+cp src/environments/environment.example.ts src/environments/environment.ts
+cp src/environments/environment.example.ts src/environments/environment.prod.ts
+```
+
+Edit `environment.ts` for local development. For `environment.prod.ts`, set `production: true` and use your deployed redirect URIs.
+
+### Entra ID / MSAL
+
+Set `auth.enabled` to `true` and fill in `auth.clientId`, `auth.authority`, and redirect URIs. Register a Single-page application in [Microsoft Entra admin center](https://entra.microsoft.com/) and add matching redirect URIs such as `http://localhost:4200/redirect`.
+
+Auth stays disabled until `auth.enabled` is `true` and `auth.clientId` is set.
+
 ## Development server
 
 To start a local development server, run:

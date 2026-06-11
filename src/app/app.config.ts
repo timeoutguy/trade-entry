@@ -5,6 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
+import { getMsalProviders } from './core/config/msal.config';
 import { APP_DATE_FORMATS } from './shared/adapters/date-formats';
 import { IsoDateAdapter } from './shared/adapters/iso-date.adapter';
 
@@ -13,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
+    ...getMsalProviders(),
     { provide: DateAdapter, useClass: IsoDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },

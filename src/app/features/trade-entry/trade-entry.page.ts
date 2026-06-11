@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MonthlyCommitment, TradeFormValue } from '../../core/models/trade.models';
 import { coerceDateInput } from '../../shared/utils/date.utils';
+import { AuthService } from '../../core/services/auth.service';
 import { AirtableService } from '../../core/services/airtable.service';
 import { TradeCalculationService } from '../../core/services/trade-calculation.service';
 import { MonthlyCommitmentsTableComponent } from './components/monthly-commitments-table/monthly-commitments-table.component';
@@ -36,12 +37,15 @@ export class TradeEntryPage implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly calculationService: TradeCalculationService,
-    private readonly airtableService: AirtableService
+    private readonly airtableService: AirtableService,
+    readonly auth: AuthService
   ) {
     this.form = buildTradeForm(this.fb);
   }
 
   ngOnInit(): void {
+    this.auth.refreshAccount();
+
     this.form.valueChanges.subscribe(() => {
       this.updateSuggestedMonths();
       this.syncCommitments();
