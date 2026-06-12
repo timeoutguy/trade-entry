@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -33,6 +33,7 @@ import { tradeDateMax } from '../../trade-form.builder';
     MatDatepickerModule,
     MatIconModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './trade-form.component.html',
 })
 export class TradeFormComponent implements OnInit {

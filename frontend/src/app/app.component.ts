@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, Optional } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, Optional, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
@@ -11,6 +11,7 @@ import { environment } from '../environments/environment';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<router-outlet />',
 })
 export class AppComponent implements OnInit {

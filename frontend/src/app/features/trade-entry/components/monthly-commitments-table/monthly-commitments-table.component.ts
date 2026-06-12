@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -40,6 +40,7 @@ const DATE_FIELDS = new Set<keyof MonthlyCommitment>([
     MatDatepickerModule,
     MatIconModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './monthly-commitments-table.component.html',
 })
 export class MonthlyCommitmentsTableComponent {
