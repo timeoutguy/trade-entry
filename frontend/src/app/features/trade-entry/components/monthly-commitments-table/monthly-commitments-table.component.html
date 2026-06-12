@@ -1,0 +1,379 @@
+@if (commitments.length === 0) {
+  <p class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-sm text-gray-500">
+    Generate monthly commitments to see the table.
+  </p>
+} @else {
+  <div class="overflow-x-auto">
+    <table class="min-w-max border-separate border-spacing-0 text-left text-xs">
+      <thead class="text-gray-600">
+        <tr>
+          <th
+            class="sticky left-0 z-40 w-28 min-w-28 border-b border-r border-gray-200 bg-gray-50 px-3 py-2"
+          >
+            Month
+          </th>
+          <th
+            class="sticky left-28 z-40 w-40 min-w-40 border-b border-r border-gray-200 bg-gray-50 px-3 py-2 shadow-[4px_0_8px_-4px_rgba(15,23,42,0.18)]"
+          >
+            Leg #
+          </th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Trade Date</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Contract Ref</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Trader</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Location</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Tenor Start</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Tenor End</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Client</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Direction</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Qty Mode</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Quantity</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Unit</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Quality</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Tolerance</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Tol. Option</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Incoterm</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Incoterm Loc.</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Index</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Price</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Currency</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Payment Type</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Pay Days</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Pay Trigger</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Transport</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Broker</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Specs</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Comment</th>
+          <th class="border-b border-gray-200 bg-gray-50 px-3 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of commitments; track row.monthIndex; let i = $index) {
+          <tr class="group border-t border-gray-100">
+            <td
+              class="sticky left-0 z-30 w-28 min-w-28 border-r border-gray-200 bg-white px-3 py-2 font-medium text-gray-800 group-hover:bg-gray-50"
+            >
+              {{ monthLabel(row) }}
+            </td>
+            <td
+              class="sticky left-28 z-30 w-40 min-w-40 border-r border-gray-200 bg-white px-3 py-2 font-mono text-gray-700 shadow-[4px_0_8px_-4px_rgba(15,23,42,0.18)] group-hover:bg-gray-50"
+            >
+              {{ row.legNumber }}
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <input
+                  matInput
+                  [ngModel]="row.tradeDate"
+                  [matDatepicker]="tradeDatePicker"
+                  (ngModelChange)="updateField(i, 'tradeDate', $event)"
+                />
+                <mat-datepicker-toggle matIconSuffix [for]="tradeDatePicker" />
+                <mat-datepicker #tradeDatePicker />
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <input
+                  matInput
+                  type="text"
+                  [ngModel]="row.contractRef"
+                  (ngModelChange)="updateField(i, 'contractRef', $event)"
+                />
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.trader"
+                  (ngModelChange)="updateField(i, 'trader', $event)"
+                >
+                  @for (trader of traders; track trader) {
+                    <mat-option [value]="trader">{{ trader }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.tradeLocation"
+                  (ngModelChange)="updateField(i, 'tradeLocation', $event)"
+                >
+                  @for (location of tradeLocations; track location) {
+                    <mat-option [value]="location">{{ location }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <input
+                  matInput
+                  [ngModel]="row.tenorStart"
+                  [matDatepicker]="tenorStartPicker"
+                  (ngModelChange)="updateField(i, 'tenorStart', $event)"
+                />
+                <mat-datepicker-toggle matIconSuffix [for]="tenorStartPicker" />
+                <mat-datepicker #tenorStartPicker />
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <input
+                  matInput
+                  [ngModel]="row.tenorEnd"
+                  [matDatepicker]="tenorEndPicker"
+                  (ngModelChange)="updateField(i, 'tenorEnd', $event)"
+                />
+                <mat-datepicker-toggle matIconSuffix [for]="tenorEndPicker" />
+                <mat-datepicker #tenorEndPicker />
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.client"
+                  (ngModelChange)="updateField(i, 'client', $event)"
+                >
+                  @for (client of config.clients; track client) {
+                    <mat-option [value]="client">{{ client }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.direction"
+                  (ngModelChange)="updateField(i, 'direction', $event)"
+                >
+                  @for (direction of directions; track direction) {
+                    <mat-option [value]="direction">{{ direction }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.quantityMode"
+                  (ngModelChange)="updateField(i, 'quantityMode', $event)"
+                >
+                  <mat-option value="total">Total</mat-option>
+                  <mat-option value="perMonth">Per month</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-20 min-w-20">
+                <input
+                  matInput
+                  type="number"
+                  step="1"
+                  min="0"
+                  [ngModel]="row.quantity"
+                  (ngModelChange)="updateField(i, 'quantity', $event === '' ? null : +$event)"
+                />
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.deliveryUnit"
+                  (ngModelChange)="updateField(i, 'deliveryUnit', $event)"
+                >
+                  @for (unit of deliveryUnits; track unit) {
+                    <mat-option [value]="unit">{{ unit }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.quality"
+                  (ngModelChange)="updateField(i, 'quality', $event)"
+                >
+                  @for (quality of config.qualities; track quality) {
+                    <mat-option [value]="quality">{{ quality }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.tolerance"
+                  (ngModelChange)="updateField(i, 'tolerance', $event)"
+                >
+                  @for (tolerance of config.tolerances; track tolerance) {
+                    <mat-option [value]="tolerance">{{ tolerance }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.toleranceOption"
+                  (ngModelChange)="updateField(i, 'toleranceOption', $event)"
+                >
+                  @for (option of toleranceOptions; track option) {
+                    <mat-option [value]="option">{{ option }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.incoterm"
+                  (ngModelChange)="updateField(i, 'incoterm', $event)"
+                >
+                  @for (incoterm of config.incoterms; track incoterm) {
+                    <mat-option [value]="incoterm">{{ incoterm }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-32">
+                <mat-select
+                  multiple
+                  [ngModel]="row.incotermLocations"
+                  (ngModelChange)="updateField(i, 'incotermLocations', $event)"
+                >
+                  @for (location of config.incotermLocations; track location) {
+                    <mat-option [value]="location">{{ location }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.index"
+                  (ngModelChange)="updateField(i, 'index', $event)"
+                >
+                  @for (index of config.indices; track index) {
+                    <mat-option [value]="index">{{ index }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-20 min-w-20">
+                <input
+                  matInput
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  [ngModel]="row.price"
+                  (ngModelChange)="updateField(i, 'price', $event === '' ? null : +$event)"
+                />
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.premiumCurrency"
+                  (ngModelChange)="updateField(i, 'premiumCurrency', $event)"
+                >
+                  @for (currency of premiumCurrencies; track currency) {
+                    <mat-option [value]="currency">{{ currency }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.paymentType"
+                  (ngModelChange)="updateField(i, 'paymentType', $event)"
+                >
+                  @for (paymentType of config.paymentTypes; track paymentType) {
+                    <mat-option [value]="paymentType">{{ paymentType }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-16 min-w-16">
+                <input
+                  matInput
+                  type="number"
+                  step="1"
+                  min="0"
+                  [ngModel]="row.paymentDays"
+                  (ngModelChange)="updateField(i, 'paymentDays', $event === '' ? null : +$event)"
+                />
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.paymentTrigger"
+                  (ngModelChange)="updateField(i, 'paymentTrigger', $event)"
+                >
+                  @for (trigger of config.paymentTriggers; track trigger) {
+                    <mat-option [value]="trigger">{{ trigger }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.modeOfTransport"
+                  (ngModelChange)="updateField(i, 'modeOfTransport', $event)"
+                >
+                  @for (mode of modesOfTransport; track mode) {
+                    <mat-option [value]="mode">{{ mode }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-full min-w-24">
+                <mat-select
+                  [ngModel]="row.broker"
+                  (ngModelChange)="updateField(i, 'broker', $event)"
+                >
+                  <mat-option value="">None</mat-option>
+                  @for (broker of config.brokers; track broker) {
+                    <mat-option [value]="broker">{{ broker }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-32 min-w-32">
+                <input
+                  matInput
+                  type="text"
+                  maxlength="250"
+                  [ngModel]="row.specs"
+                  (ngModelChange)="updateField(i, 'specs', $event)"
+                />
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <mat-form-field subscriptSizing="dynamic" class="w-32 min-w-32">
+                <input
+                  matInput
+                  type="text"
+                  maxlength="250"
+                  [ngModel]="row.comment"
+                  (ngModelChange)="updateField(i, 'comment', $event)"
+                />
+              </mat-form-field>
+            </td>
+            <td class="px-2 py-1">
+              <button mat-stroked-button type="button" (click)="resetRow(i)">Reset</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

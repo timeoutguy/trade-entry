@@ -1,0 +1,137 @@
+<div class="cfp-page cfp-pattern-bg">
+  <header class="cfp-nav">
+    <div class="mx-auto flex max-w-screen-2xl items-center justify-between px-6 py-4">
+      <div class="flex items-center gap-3">
+        <div class="py-4">
+          <img src="logo/logo.svg" class="h-14 w-auto" alt="CFP Energy">
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        @if (auth.enabled && auth.accountName()) {
+          <span class="text-sm text-white/90">{{ auth.accountName() }}</span>
+          <button
+            mat-stroked-button
+            type="button"
+            class="!border-white/40 !text-white"
+            (click)="auth.logout()"
+          >
+            Sign out
+          </button>
+        }
+        <span class="text-sm font-medium text-white">Trade Entry Platform</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-screen-2xl space-y-8 px-6 py-8 lg:px-8">
+    <section>
+      <h1 class="cfp-page-header__title">Trade Entry</h1>
+      <p class="cfp-page-header__description">
+        Capture trade details, split into monthly commitments, and submit to Airtable.
+      </p>
+    </section>
+
+    <section class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div class="cfp-stat-card">
+        <p class="cfp-stat-card__label">Suggested months</p>
+        <p class="cfp-stat-card__value">{{ suggestedMonthCount() }}</p>
+        <p class="cfp-stat-card__hint">Calendar months in tenor range</p>
+      </div>
+      <div class="cfp-stat-card">
+        <p class="cfp-stat-card__label">Commitments</p>
+        <p class="cfp-stat-card__value">{{ monthlyCommitments().length }}</p>
+        <p class="cfp-stat-card__hint">Rows ready for submission</p>
+      </div>
+      <div class="cfp-stat-card">
+        <p class="cfp-stat-card__label">Form status</p>
+        <p class="cfp-stat-card__value">{{ form.valid ? 'Valid' : 'Incomplete' }}</p>
+        <p class="cfp-stat-card__hint">All required fields must pass validation</p>
+      </div>
+    </section>
+
+    <section class="cfp-card p-1">
+      <div class="border-b border-cfp-border px-6 py-4">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-cfp-dark-blue">edit_document</span>
+          <h2 class="text-base font-semibold text-cfp-text">Trade details</h2>
+        </div>
+      </div>
+      <div class="p-6">
+        <app-trade-form [form]="form" />
+      </div>
+    </section>
+
+    <mat-card>
+      <mat-card-content class="pt-6">
+        <div
+          class="mb-6 flex flex-col gap-4 border-b border-cfp-border-subtle pb-6 lg:flex-row lg:items-center lg:justify-between"
+        >
+          <div>
+            <h2 class="flex items-center gap-2 text-base font-semibold text-cfp-text">
+              <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+              Monthly Commitments
+            </h2>
+            <p class="mt-1 text-sm text-cfp-text-muted">
+              {{ suggestedMonthCount() }} suggested months · grid updates when form is complete
+            </p>
+          </div>
+
+          <mat-form-field
+            appearance="outline"
+            subscriptSizing="dynamic"
+            class="cfp-toolbar-field w-28"
+          >
+            <mat-label>Override</mat-label>
+            <input
+              matInput
+              id="monthOverride"
+              type="number"
+              min="1"
+              step="1"
+              [value]="monthCountOverride ?? ''"
+              (input)="onMonthCountOverrideChange($any($event.target).value)"
+            />
+          </mat-form-field>
+        </div>
+
+        @if (form.get('quantityMode')?.value === 'total' && monthlyCommitments().length > 0) {
+          <p class="mb-4 text-xs text-cfp-text-muted">
+            Total quantity split evenly across months. Remainder added to last month.
+          </p>
+        }
+
+        <app-monthly-commitments-table
+          [commitments]="monthlyCommitments()"
+          [parentTrade]="getTradeValue()"
+          (commitmentsChange)="onCommitmentsChange($event)"
+        />
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-content class="flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm text-cfp-text-secondary">
+            {{ monthlyCommitments().length }} monthly commitment(s) ready.
+          </p>
+          @if (submitMessage()) {
+            <p class="cfp-success-text mt-1 text-sm">{{ submitMessage() }}</p>
+          }
+        </div>
+        <button
+          mat-flat-button
+          type="button"
+          class="cfp-btn-dark"
+          [disabled]="!canSubmit()"
+          (click)="submitToAirtable()"
+        >
+          <span class="inline-flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+            Submit to Airtable
+          </span>
+        </button>
+      </mat-card-content>
+    </mat-card>
+
+  </main>
+</div>

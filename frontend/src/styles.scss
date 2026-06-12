@@ -1,0 +1,23 @@
+@use './design-system/tokens.css';
+@use './design-system/material-theme';
+@use './design-system/material-components';
+
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import './design-system/tailwind-theme.css';
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--cfp-font-family);
+  color: var(--cfp-text-primary);
+  background: var(--cfp-surface-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
